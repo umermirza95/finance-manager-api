@@ -43,12 +43,12 @@ export default class TransactionController {
         });
     }
 
-    deleteTransaction(data: any): Promise<string> {
-        return new Promise<string>(async (resolve, reject) => {
+    deleteTransaction(data: any): Promise<any> {
+        return new Promise<any>(async (resolve, reject) => {
             try {
                 let table=Utilities.collections.transactions;
                 await firestore().collection(table).doc(data.id).delete();
-                resolve("OK");
+                resolve({status:"ok"});
             }
             catch (error) {
                 reject(error);

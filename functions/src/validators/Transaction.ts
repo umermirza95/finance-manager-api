@@ -73,7 +73,10 @@ function validateGetTransaction() {
 
 function checkCategoryId(value: any, uid: string) {
     return new Promise<void>(async (resolve, reject) => {
-        if(!value) reject();
+        if (!value) {
+            reject();
+            return;
+        }
         const category = await firestore().collection("categories").doc(value).get();
         const createdBy = category.data()?.createdBy;
         if (category.exists && (createdBy === uid || createdBy === Utilities.creators.system)) { // If category exists then it should either be default or user's
@@ -85,9 +88,12 @@ function checkCategoryId(value: any, uid: string) {
     });
 }
 
-function checkTransactionId(value: any, uid: string) {
+function checkTransactionId(value: string, uid: string) {
     return new Promise<void>(async (resolve, reject) => {
-        if(!value) reject();
+        if (!value) {
+            reject();
+            return;
+        }
         const transaction = await firestore().collection("transactions").doc(value).get();
         if (transaction.exists && transaction.data()?.uid === uid) { //  transaction must exist and belong to requesting user
             resolve();
@@ -98,7 +104,7 @@ function checkTransactionId(value: any, uid: string) {
     });
 }
 
-export { 
+export {
     validateNewTransaction,
     validateGetTransaction,
     validateEditTransaction,
