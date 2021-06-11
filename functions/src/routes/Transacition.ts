@@ -7,7 +7,7 @@ import TransactionController from '../controllers/TransactionController';
 const validator = require('../validators/Authentication');
 const router : express.IRouter  = express.Router();
 
-//router.use(validator.authenticateRequest);
+router.use(validator.authenticateRequest);
 
 
 router.post('/', transactionVaidator.validateNewTransaction(), async (req: express.Request, res: express.Response) => {
@@ -18,6 +18,36 @@ router.post('/', transactionVaidator.validateNewTransaction(), async (req: expre
         }
         let transactionController=new TransactionController();
         const response=await transactionController.addTransaction(req.body);
+        res.status(200).send(response);
+    }
+    catch(error){
+        res.status(400).send(error);
+    }
+});
+
+router.put('/', transactionVaidator.validateEditTransaction(), async (req: express.Request, res: express.Response) => {
+    try{
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            throw errors;
+        }
+        let transactionController=new TransactionController();
+        const response=await transactionController.editTransaction(req.body);
+        res.status(200).send(response);
+    }
+    catch(error){
+        res.status(400).send(error);
+    }
+});
+
+router.delete('/', transactionVaidator.validateDeleteTransaction(), async (req: express.Request, res: express.Response) => {
+    try{
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            throw errors;
+        }
+        let transactionController=new TransactionController();
+        const response=await transactionController.deleteTransaction(req.query);
         res.status(200).send(response);
     }
     catch(error){

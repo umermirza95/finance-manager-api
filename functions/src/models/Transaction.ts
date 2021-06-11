@@ -21,6 +21,15 @@ export default class Transaction {
         }
     }
 
+    update(data: any) {
+        this.type = data.type ? data.type : this.type;
+        this.amount = data.amount ? data.amount : this.amount;
+        this.categoryId = data.categoryId ? data.categoryId : this.categoryId;
+        this.timestamp = data.timestamp ? data.timestamp : this.timestamp;
+        this.comment = data.comment ? data.comment : this.comment;
+    }
+
+
     toJson(): any {
         return {
             type: this.type,
@@ -28,7 +37,7 @@ export default class Transaction {
             categoryId: this.categoryId,
             timestamp: this.timestamp,
             comment: this.comment,
-            uid:this.uid
+            uid: this.uid
         };
     }
 }
