@@ -17,7 +17,7 @@ export default class Transaction {
     constructor(data: any = null) {
         if (data) {
             this.id = data.id ? data.id : null;
-            this.uid = data.user?.uid ? data.user.uid : null;
+            this.uid = data.user?.uid ? data.user.uid : data.uid ? data.uid : null;
             this.type = data.type ? data.type : null;
             this.amount = data.amount ? data.amount : 0;
             this.categoryId = data.categoryId ? data.categoryId : null;

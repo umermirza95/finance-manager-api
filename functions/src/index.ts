@@ -4,6 +4,7 @@ import * as functions from "firebase-functions";
 import express from 'express';
 const firebase = require("firebase-admin");
 import serviceAccount from "./serviceAccountKey.json";
+import XRUpdater from "./functions/XRUpdater";
 const transactionRouter = require("./routes/Transacition");
 const categoryRouter = require('./routes/Category');
 const bodyParser = require("body-parser");
@@ -24,3 +25,4 @@ app.use("/transaction", transactionRouter);
 
 
 exports.API = functions.https.onRequest(app);
+exports.XRUpdater = XRUpdater;

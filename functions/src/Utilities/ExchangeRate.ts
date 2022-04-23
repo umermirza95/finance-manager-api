@@ -1,3 +1,5 @@
+import { convertUnixToDate } from "./Utilities";
+
 const fetch = require('node-fetch');
 
 const baseUrl = "https://api.transferwise.com/v1";
@@ -17,8 +19,11 @@ export const getCurrentExchangeRate = (exchangeFrom: string, exchangeTo: string)
     });
 }
 
-export const getHistoricExchangeRate = async (exchangeFrom: string, exchangeTo: string, date: string): Promise<number> => {
+export const getHistoricExchangeRate = async (exchangeFrom: string, exchangeTo: string, date: string | number): Promise<number> => {
     try {
+        if (typeof date === "number") {
+            date = convertUnixToDate(date);
+        }
         const req = await fetch(baseUrl + "/rates?source=" + exchangeFrom + "&target=" + exchangeTo + "&time=" + date, {
             headers: { Authorization: 'Bearer ' + process.env.WISE_API_KEY }
         });

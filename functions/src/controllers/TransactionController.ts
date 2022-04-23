@@ -38,7 +38,6 @@ export default class TransactionController {
                 let table = Utilities.collections.transactions;
                 const dbTrans = await firestore().collection(table).doc(data.id).get();
                 let newTransaction = new Transaction(dbTrans.data());
-                newTransaction.uid = data.user.uid;
                 newTransaction.update(data);
                 let oldTransaction = new Transaction(dbTrans.data());
                 newTransaction.id = dbTrans.id;
@@ -47,8 +46,7 @@ export default class TransactionController {
                 if (newTransaction.currency !== oldTransaction.currency || newTransaction.timestamp !== oldTransaction.timestamp) {
                     newTransaction.exchangeRates = {};
                     newTransaction.exchangeRates[newTransaction.currency] = 1;
-                    let date = convertUnixToDate(newTransaction.timestamp);
-                    newTransaction.exchangeRates[user.preferredCurrency] = await getHistoricExchangeRate(newTransaction.currency, user.preferredCurrency, date);
+                    newTransaction.exchangeRates[user.preferredCurrency] = await getHistoricExchangeRate(newTransaction.currency, user.preferredCurrency, newTransaction.timestamp);
                 }
                 await firestore().collection(table).doc(data.id).update(newTransaction.toJson());
                 resolve(newTransaction);
